@@ -18,7 +18,7 @@ private interface RetrofitPetNetworkApi {
     suspend fun getPetList(
         @Path(value = "key") key: String = "53456c65666b736931303474756a456c",
         @Path(value = "type") type: String = "json",
-        @Path(value = "service") service: String = "SearchingPet",
+        @Path(value = "service") service: String = "TbAdpWaitAnimalView",
         @Path(value = "startIndex") startIndex: Int = 1,
         @Path(value = "endIndex") endIndex: Int = 5
 
@@ -31,7 +31,7 @@ class RetrofitPetNetwork @Inject constructor(
     okHttpCallFactory: Call.Factory
 ) : PetNetworkDataSource{
     private val petNetworkApi = Retrofit.Builder()
-        .baseUrl("http://openapi.seoul.go.kr/:8088")
+        .baseUrl("http://openapi.seoul.go.kr:8088")
         .callFactory(okHttpCallFactory)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

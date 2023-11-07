@@ -8,4 +8,5 @@ interface MainRepository {
     suspend fun getPetList() : Response<GetPetListResponse>
 
 
+
 }
