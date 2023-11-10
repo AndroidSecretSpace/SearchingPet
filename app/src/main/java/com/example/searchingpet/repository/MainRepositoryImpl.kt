@@ -9,7 +9,7 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val dataSource: RetrofitPetNetwork
 ) : MainRepository {
-    override suspend fun getPetList(): Response<GetPetListResponse> {
-        return dataSource.getPetList()
+    override suspend fun getPetList(startIndex : Int, endIndex :Int): Response<GetPetListResponse> {
+        return dataSource.getPetList(startIndex = startIndex, endIndex = endIndex)
     }
 }

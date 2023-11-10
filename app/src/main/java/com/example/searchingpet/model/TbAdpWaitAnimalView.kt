@@ -9,5 +9,5 @@ data class TbAdpWaitAnimalView(
     @SerializedName("RESULT")
     val rESULT: RESULT,
     @SerializedName("row")
-    val row: List<Row>
+    val row: List<Row>?
 )

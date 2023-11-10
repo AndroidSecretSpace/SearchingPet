@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class GetPetListResponse(
     @SerializedName("TbAdpWaitAnimalView")
-    val tbAdpWaitAnimalView: TbAdpWaitAnimalView
+    val tbAdpWaitAnimalView: TbAdpWaitAnimalView?
 )

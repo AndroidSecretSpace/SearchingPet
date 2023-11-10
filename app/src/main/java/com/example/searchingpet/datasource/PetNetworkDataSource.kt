@@ -5,7 +5,7 @@ import retrofit2.Response
 
 interface PetNetworkDataSource {
 
-    suspend fun getPetList() : Response<GetPetListResponse>
+    suspend fun getPetList(startIndex : Int, endIndex :Int) : Response<GetPetListResponse>
 
 
 }

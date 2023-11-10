@@ -9,12 +9,7 @@ class SearchingPetViewHolder(private val binding: ItemPetlistBinding) :
 
 
     fun bind(item: Row) {
-        binding.tvName.text = item.nM
-        binding.tvKind.text = item.sPCS
-        binding.tvSpecies.text = item.bREEDS
-
-
-
+        binding.data = item
 
     }
 

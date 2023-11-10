@@ -19,8 +19,8 @@ private interface RetrofitPetNetworkApi {
         @Path(value = "key") key: String = "53456c65666b736931303474756a456c",
         @Path(value = "type") type: String = "json",
         @Path(value = "service") service: String = "TbAdpWaitAnimalView",
-        @Path(value = "startIndex") startIndex: Int = 1,
-        @Path(value = "endIndex") endIndex: Int = 5
+        @Path(value = "startIndex") startIndex: Int,
+        @Path(value = "endIndex") endIndex: Int
 
 
     ) : Response<GetPetListResponse>
@@ -37,8 +37,8 @@ class RetrofitPetNetwork @Inject constructor(
         .build()
         .create(RetrofitPetNetworkApi::class.java)
 
-    override suspend fun getPetList(): Response<GetPetListResponse> {
-        return petNetworkApi.getPetList()
+    override suspend fun getPetList(startIndex : Int, endIndex :Int): Response<GetPetListResponse> {
+        return petNetworkApi.getPetList(startIndex = startIndex , endIndex = endIndex )
     }
 
 }
