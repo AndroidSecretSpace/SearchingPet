@@ -20,9 +20,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private val tabConfigurationStrategy =
-        TabLayoutMediator.TabConfigurationStrategy { tab, positon ->
-            tab.icon = resources.obtainTypedArray(R.array.array_main_tab_icon).getDrawable(positon)
-            tab.text = resources.getStringArray(R.array.array_main_tab_text)[positon]
+        TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+            tab.icon = resources.obtainTypedArray(R.array.array_main_tab_icon).getDrawable(position)
+            tab.text = resources.getStringArray(R.array.array_main_tab_text)[position]
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
