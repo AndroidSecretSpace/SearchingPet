@@ -73,4 +73,12 @@ dependencies {
 
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation ("androidx.activity:activity-compose:1.5.1")
+
+
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+    implementation ("androidx.activity:activity-ktx:1.8.0")
+
+    implementation("com.naver.maps:map-sdk:3.17.0")
+
+
 }

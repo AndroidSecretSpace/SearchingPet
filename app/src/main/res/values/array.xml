@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="array_main_tab_text">
+        <item>list</item>
+        <item>map</item>
+        <item>like</item>
+
+
+    </array>
+
+    <array name="array_main_tab_icon">
+        <item>@drawable/baseline_format_list_bulleted_24</item>
+        <item>@drawable/baseline_map_24</item>
+        <item>@drawable/baseline_favorite_24</item>
+
+    </array>
+
+</resources>

@@ -1,15 +1,15 @@
 package com.example.searchingpet
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.example.searchingpet.adapter.SearchingPetAdapter
+import com.example.searchingpet.adapter.FragmentPagerAdapter
+
 import com.example.searchingpet.databinding.ActivityMainBinding
-import com.example.searchingpet.model.ProgressType
+import com.example.searchingpet.view.LikeFragment
+import com.example.searchingpet.view.ListFragment
+import com.example.searchingpet.view.MapFragment
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -17,42 +17,33 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
-    private val viewModel  by viewModels<MainViewModel>()
-    private val searchingPetAdapter = SearchingPetAdapter()
 
+
+    private val tabConfigurationStrategy =
+        TabLayoutMediator.TabConfigurationStrategy { tab, positon ->
+            tab.icon = resources.obtainTypedArray(R.array.array_main_tab_icon).getDrawable(positon)
+            tab.text = resources.getStringArray(R.array.array_main_tab_text)[positon]
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        viewModel.getPetList()
+        binding.lifecycleOwner = this
 
+        val list = listOf(
+            ListFragment(),
+            MapFragment(),
+            LikeFragment(),
+        )
 
-        binding.rvPetList.adapter = searchingPetAdapter
-        binding.rvPetList.addOnScrollListener(object :RecyclerView.OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if(!recyclerView.canScrollVertically(1)){
-                    viewModel.getPetList()
-                    Toast.makeText(this@MainActivity,"끝",Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
+        val pageAdapter = FragmentPagerAdapter(list, this)
 
-        viewModel.searchPetListLiveData.observe(this){ row ->
-            row?.let{
-
-            searchingPetAdapter.submitList(it)
-
-            }
+        with(binding) {
+            viewPager.adapter = pageAdapter
+            TabLayoutMediator(tabLayout, viewPager, tabConfigurationStrategy).attach()
         }
-
-        viewModel.progressListLiveData.observe(this){
-            binding.progressBar.visibility = if (it == ProgressType.Loading) View.VISIBLE
-            else View.GONE
-        }
-
 
 
     }
