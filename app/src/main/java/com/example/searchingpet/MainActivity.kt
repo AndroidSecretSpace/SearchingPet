@@ -15,9 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainBinding
-
-
+    private lateinit var binding: ActivityMainBinding
 
     private val tabConfigurationStrategy =
         TabLayoutMediator.TabConfigurationStrategy { tab, position ->
