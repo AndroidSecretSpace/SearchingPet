@@ -19,10 +19,11 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import dagger.hilt.android.AndroidEntryPoint
 import com.naver.maps.map.MapFragment
+import com.naver.maps.map.overlay.Overlay
 import java.util.Locale
 
 @AndroidEntryPoint
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
     private lateinit var binding: FragmentMapBinding
     private val marker = Marker()
 
@@ -47,6 +48,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+
+    // 네이버맵 객체 초기화
     private fun initMapView() {
         val fm = childFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map_fragment) as MapFragment?
@@ -66,10 +69,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         marker.position = LatLng(37.5670135, 126.9783740)
         marker.map = naverMap
+        marker.onClickListener = this
+
+
+
 
         naverMap.setOnMapClickListener { point, coord ->
             marker(coord.latitude, coord.longitude)
         }
+
+
 
 
     }
@@ -80,6 +89,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
 
+
+    // 좌표 -> 주소 변환
     private fun getAddress(latitude: Double, longitude: Double) {
         val geocoder = Geocoder(requireContext(), Locale.KOREAN)
 
@@ -101,6 +112,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun toast(text: String) {
         Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onClick(overlay: Overlay): Boolean {
+
+        if(overlay is Marker){
+            Toast.makeText(requireContext(),"마커가 선택되었습니다",Toast.LENGTH_SHORT).show()
+            return true
+        }
+
+        return false
 
     }
 
