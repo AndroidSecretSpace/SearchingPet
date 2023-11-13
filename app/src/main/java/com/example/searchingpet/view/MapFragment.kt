@@ -19,13 +19,16 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import dagger.hilt.android.AndroidEntryPoint
 import com.naver.maps.map.MapFragment
+import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Overlay
 import java.util.Locale
 
 @AndroidEntryPoint
-class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
+class MapFragment : Fragment(), OnMapReadyCallback, Overlay.OnClickListener {
     private lateinit var binding: FragmentMapBinding
     private val marker = Marker()
+
+    private val infoWindow = InfoWindow()
 
 
     override fun onCreateView(
@@ -34,7 +37,6 @@ class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)
         return binding.root
-
 
 
     }
@@ -54,14 +56,13 @@ class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
         val fm = childFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map_fragment) as MapFragment?
             ?: MapFragment.newInstance().also {
-                fm.beginTransaction().add(R.id.map_fragment,this).commit()
+                fm.beginTransaction().add(R.id.map_fragment, this).commit()
             }
 
         mapFragment.getMapAsync(this)
 
 
     }
-
 
 
     @UiThread
@@ -78,10 +79,26 @@ class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
             marker(coord.latitude, coord.longitude)
         }
 
+        val listener = Overlay.OnClickListener { overlay ->
+            val marker = overlay as Marker
+
+            if (marker.infoWindow == null) {
+                // 현재 마커에 정보 창이 열려있지 않을 경우 엶
+                infoWindow.open(marker)
+            } else {
+                // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
+                infoWindow.close()
+            }
+
+            true
+        }
 
 
+
+        marker.onClickListener = listener
 
     }
+
 
     private fun marker(latitude: Double, longitude: Double) {
         marker.position = LatLng(latitude, longitude)
@@ -89,11 +106,9 @@ class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
     }
 
 
-
     // 좌표 -> 주소 변환
     private fun getAddress(latitude: Double, longitude: Double) {
         val geocoder = Geocoder(requireContext(), Locale.KOREAN)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             geocoder.getFromLocation(
                 latitude, longitude, 1
@@ -106,8 +121,17 @@ class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
             if (addresses != null) {
                 toast(addresses[0].getAddressLine(0))
+
+                infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(requireContext()) {
+                    override fun getText(infoWindow: InfoWindow): CharSequence {
+                        return addresses[0].getAddressLine(0) as CharSequence
+                    }
+
+                }
             }
+
         }
+
     }
 
     private fun toast(text: String) {
@@ -115,22 +139,21 @@ class MapFragment : Fragment(), OnMapReadyCallback,Overlay.OnClickListener {
 
     }
 
+    private fun markerClickedAddressShow() {
+
+
+    }
+
     override fun onClick(overlay: Overlay): Boolean {
 
-        if(overlay is Marker){
-            Toast.makeText(requireContext(),"마커가 선택되었습니다",Toast.LENGTH_SHORT).show()
+        if (overlay is Marker) {
+//            Toast.makeText(requireContext(), "마커가 선택되었습니다", Toast.LENGTH_SHORT).show()
             return true
         }
 
         return false
 
     }
-
-
-
-
-
-
 
 
 }
