@@ -16,4 +16,7 @@ interface DataModule {
     fun bindsMainRepository(
         mainRepository: MainRepositoryImpl
     ) : MainRepository
+
+
+
 }

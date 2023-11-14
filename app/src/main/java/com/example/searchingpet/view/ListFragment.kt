@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,6 +15,7 @@ import com.example.searchingpet.R
 import com.example.searchingpet.adapter.SearchingPetAdapter
 import com.example.searchingpet.databinding.FragmentListBinding
 import com.example.searchingpet.model.ProgressType
+import com.example.searchingpet.toEntity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,7 +25,9 @@ class ListFragment : Fragment() {
     private lateinit var binding : FragmentListBinding
 
     private val viewModel by activityViewModels<ListViewModel>()
-    private val searchingPetAdapter = SearchingPetAdapter()
+    private val searchingPetAdapter = SearchingPetAdapter{
+        viewModel.addLike(it.toEntity())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +42,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getPetList()
+        viewModel.getLikeList()
 
 
         binding.rvPetList.adapter = searchingPetAdapter
@@ -54,10 +59,16 @@ class ListFragment : Fragment() {
         viewModel.searchPetListLiveData.observe(viewLifecycleOwner){ row ->
             row?.let{
 
+
                 searchingPetAdapter.submitList(it)
 
             }
         }
+
+        viewModel.likePetListLiveData.observe(viewLifecycleOwner){
+            searchingPetAdapter.submitList(it.)
+        }
+
 
         viewModel.progressListLiveData.observe(viewLifecycleOwner){
             binding.progressBar.visibility = if (it == ProgressType.Loading) View.VISIBLE

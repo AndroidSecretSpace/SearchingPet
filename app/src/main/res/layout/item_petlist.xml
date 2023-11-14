@@ -6,52 +6,67 @@
     <data>
         <variable
             name="data"
-            type="com.example.searchingpet.model.Row" />
+            type="com.example.searchingpet.model.ListItem" />
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:padding="20dp"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:maxLines="2"
-            tools:text="NAME"
-            android:setName="@{data.nM}"
-            android:textSize="16sp"
-            android:textStyle="bold"
-             />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_kind"
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:maxLines="2"
+                android:setName="@{data.nM}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="NAME" />
+
+            <TextView
+                android:id="@+id/tv_kind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:setAnimalType="@{data.sPCS}"
+                android:textSize="14sp"
+                tools:text="KIND" />
+
+            <TextView
+                android:id="@+id/tv_species"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="228dp"
+                android:setType="@{data.bREEDS}"
+                android:textSize="14sp"
+                tools:text="species" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/likeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            tools:text="KIND"
-            android:setAnimalType="@{data.sPCS}"
-            android:textSize="14sp"
-             />
+            tools:text="좋아요"
+            android:setIsLike="@{data.isLike}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_species"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="228dp"
-            android:setType="@{data.bREEDS}"
-            tools:text = "species"
-            android:textSize="14sp"
-             />
-
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
