@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,6 +15,8 @@ import com.example.searchingpet.R
 import com.example.searchingpet.adapter.SearchingPetAdapter
 import com.example.searchingpet.databinding.FragmentListBinding
 import com.example.searchingpet.model.ProgressType
+import com.example.searchingpet.toEntity
+import com.example.searchingpet.toReview
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,7 +26,10 @@ class ListFragment : Fragment() {
     private lateinit var binding : FragmentListBinding
 
     private val viewModel by activityViewModels<ListViewModel>()
-    private val searchingPetAdapter = SearchingPetAdapter()
+    private val searchingPetAdapter = SearchingPetAdapter {
+        if (it.isLike) viewModel.deleteLike(it.toEntity())
+        else viewModel.addLike(it.toEntity())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +44,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getPetList()
-
+        viewModel.getLikeList()
 
         binding.rvPetList.adapter = searchingPetAdapter
         binding.rvPetList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -50,6 +56,7 @@ class ListFragment : Fragment() {
                 }
             }
         })
+        //todo : 좋아요 해제일때 delete 로직 추가/ 좋아요 눌렀을 때 live로 반응하는거
 
         viewModel.searchPetListLiveData.observe(viewLifecycleOwner){ row ->
             row?.let{
@@ -57,6 +64,10 @@ class ListFragment : Fragment() {
                 searchingPetAdapter.submitList(it)
 
             }
+        }
+
+        viewModel.likePetListLiveData.observe(viewLifecycleOwner){
+            searchingPetAdapter.submitList(viewModel.searchPetListLiveData.value?.toReview(it))
         }
 
         viewModel.progressListLiveData.observe(viewLifecycleOwner){
