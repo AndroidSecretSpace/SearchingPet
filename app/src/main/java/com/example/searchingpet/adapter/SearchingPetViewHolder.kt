@@ -7,7 +7,8 @@ import com.example.searchingpet.model.Row
 
 class SearchingPetViewHolder(
     private val binding: ItemPetlistBinding,
-    private val likeClickEvent : (ListItem) -> Unit
+    private val likeClickEvent : (ListItem) -> Unit,
+    private val detailClickEvent : (ListItem) ->Unit
 ) :
     RecyclerView.ViewHolder(binding.root) {
 
@@ -17,6 +18,10 @@ class SearchingPetViewHolder(
 
         binding.likeBtn.setOnClickListener {
             likeClickEvent.invoke(item)
+        }
+
+        binding.frame.setOnClickListener{
+            detailClickEvent.invoke(item)
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.searchingpet.ListViewModel
 import com.example.searchingpet.R
@@ -26,10 +27,18 @@ class ListFragment : Fragment() {
     private lateinit var binding : FragmentListBinding
 
     private val viewModel by activityViewModels<ListViewModel>()
-    private val searchingPetAdapter = SearchingPetAdapter {
+    private val searchingPetAdapter = SearchingPetAdapter(
+        likeClickEvent = {
         if (it.isLike) viewModel.deleteLike(it.toEntity())
         else viewModel.addLike(it.toEntity())
-    }
+
+        }, detailClickEvent = {
+            viewModel.setDetailInfo(it)
+            findNavController().navigate(R.id.action_mainFragment_to_detailFragment)
+        }
+    )
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +65,7 @@ class ListFragment : Fragment() {
                 }
             }
         })
-        //todo : 좋아요 해제일때 delete 로직 추가/ 좋아요 눌렀을 때 live로 반응하는거
+
 
         viewModel.searchPetListLiveData.observe(viewLifecycleOwner){ row ->
             row?.let{

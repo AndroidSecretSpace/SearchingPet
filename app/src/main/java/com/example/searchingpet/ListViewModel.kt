@@ -35,8 +35,21 @@ class ListViewModel @Inject constructor(
     val likePetListLiveData: LiveData<List<LikeEntity>> = _likePetListLiveData
 
 
+    private lateinit var detailInfo: ListItem
+
+
     init {
         _progressLiveData.value = ProgressType.Init
+    }
+
+
+    fun setDetailInfo(info: ListItem) {
+        detailInfo = info
+    }
+
+    fun getDetailInfo(): ListItem? {
+        return if (::detailInfo.isInitialized) detailInfo
+        else null
     }
 
     fun getPetList() = viewModelScope.launch {
@@ -54,7 +67,11 @@ class ListViewModel @Inject constructor(
                     it.body()?.tbAdpWaitAnimalView?.row?.let { row ->
                         val list = mutableListOf<ListItem>()
                         list.addAll(savePetList)
-                        if (likePetListLiveData.value != null) list.addAll(row.toListItem(likePetListLiveData.value!!))
+                        if (likePetListLiveData.value != null) list.addAll(
+                            row.toListItem(
+                                likePetListLiveData.value!!
+                            )
+                        )
                         _searchPetListLiveData.value = list
                         savePetList.addAll(list)
                         _progressLiveData.value = ProgressType.Success
@@ -63,8 +80,8 @@ class ListViewModel @Inject constructor(
                         else _progressLiveData.value = ProgressType.Success
 
                     } ?: kotlin.run {
-                            _progressLiveData.value = ProgressType.Fail
-                        }
+                        _progressLiveData.value = ProgressType.Fail
+                    }
 
 
                 }

@@ -86,4 +86,11 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     kapt("android.arch.persistence.room:compiler:1.1.1")
     implementation("androidx.room:room-ktx:$room_version")
+
+    /* navigation */
+    val nav_version = "2.5.3"
+    implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation ("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+    implementation ("androidx.navigation:navigation-testing:$nav_version")
 }

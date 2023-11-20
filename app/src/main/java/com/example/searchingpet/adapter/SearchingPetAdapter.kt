@@ -11,6 +11,7 @@ import com.example.searchingpet.model.Row
 
 class SearchingPetAdapter(
     private val likeClickEvent: (ListItem) -> Unit,
+    private val detailClickEvent : (ListItem) ->Unit
 ) : ListAdapter<ListItem, SearchingPetViewHolder>(PetDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchingPetViewHolder {
         return SearchingPetViewHolder(
@@ -19,7 +20,8 @@ class SearchingPetAdapter(
                 parent,
                 false
             ),
-            likeClickEvent = likeClickEvent
+            likeClickEvent = likeClickEvent,
+            detailClickEvent = detailClickEvent
         )
     }
 
