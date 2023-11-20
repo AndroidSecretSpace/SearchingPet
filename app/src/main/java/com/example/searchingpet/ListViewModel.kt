@@ -4,9 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import com.example.searchingpet.model.LikeEntity
 import com.example.searchingpet.model.ListItem
 import com.example.searchingpet.model.ProgressType
@@ -24,7 +21,7 @@ class ListViewModel @Inject constructor(
 
     private val criteria = 10
     private var offset = 1
-    private val savePetList = mutableListOf<ListItem>()
+    private var savePetList = mutableListOf<ListItem>()
 
 
     private val _searchPetListLiveData = MutableLiveData<List<ListItem>>()
@@ -42,7 +39,6 @@ class ListViewModel @Inject constructor(
         _progressLiveData.value = ProgressType.Init
     }
 
-
     fun getPetList() = viewModelScope.launch {
         if (progressListLiveData.value != ProgressType.Loading && progressListLiveData.value != ProgressType.Last) {
             _progressLiveData.value = ProgressType.Loading
@@ -58,11 +54,7 @@ class ListViewModel @Inject constructor(
                     it.body()?.tbAdpWaitAnimalView?.row?.let { row ->
                         val list = mutableListOf<ListItem>()
                         list.addAll(savePetList)
-                        if (_likePetListLiveData.value != null) list.addAll(
-                            row.toListItem(
-                                likePetListLiveData.value!!
-                            )
-                        )
+                        if (likePetListLiveData.value != null) list.addAll(row.toListItem(likePetListLiveData.value!!))
                         _searchPetListLiveData.value = list
                         savePetList.addAll(list)
                         _progressLiveData.value = ProgressType.Success
@@ -71,8 +63,8 @@ class ListViewModel @Inject constructor(
                         else _progressLiveData.value = ProgressType.Success
 
                     } ?: kotlin.run {
-                        _progressLiveData.value = ProgressType.Fail
-                    }
+                            _progressLiveData.value = ProgressType.Fail
+                        }
 
 
                 }
@@ -82,41 +74,21 @@ class ListViewModel @Inject constructor(
         }
     }
 
-
     fun addLike(likeEntity: LikeEntity) = viewModelScope.launch {
         mainRepository.addLike(likeEntity)
 
-        _likePetListLiveData.value = setLikePetList(listOf(likeEntity))
+        getLikeList()
     }
-
-    private fun setLikePetList(likeEntity: List<LikeEntity>): List<LikeEntity> {
-
-        val list = mutableListOf<LikeEntity>()
-        likePetListLiveData.value?.let { list.addAll(it) }
-        list.addAll(likeEntity)
-        return list
-
-
-    }
-
 
     fun deleteLike(likeEntity: LikeEntity) = viewModelScope.launch {
         mainRepository.deleteLike(likeEntity.name)
 
-        val list = mutableListOf<LikeEntity>()
-        likePetListLiveData.value?.let { list.addAll(it) }
-        list.remove(likeEntity)
-        _likePetListLiveData.value = list
-
+        getLikeList()
     }
-
 
     fun getLikeList() = viewModelScope.launch {
-        _likePetListLiveData.value = setLikePetList(mainRepository.getLikeList())
-
+        _likePetListLiveData.value = mainRepository.getLikeList()
     }
-
-
 }
 
 

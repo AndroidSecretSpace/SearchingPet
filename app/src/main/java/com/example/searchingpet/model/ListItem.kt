@@ -1,8 +1,9 @@
 package com.example.searchingpet.model
 
+
 import com.google.gson.annotations.SerializedName
 
-data class ListItem (
+data class ListItem(
     val aDPSTTUS: String,
     val aGE: String,
     val aNIMALNO: Double,
@@ -16,7 +17,5 @@ data class ListItem (
     val sPCS: String,
     val tMPRPRTCCN: String,
     val tMPRPRTCSTTUS: String,
-    val isLike : Boolean
-){
-
-}
+    var isLike: Boolean
+)

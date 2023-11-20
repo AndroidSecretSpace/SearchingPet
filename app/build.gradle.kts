@@ -80,7 +80,6 @@ dependencies {
 
     implementation("com.naver.maps:map-sdk:3.17.0")
 
-
     val room_version = "2.5.0"
     implementation("androidx.room:room-common:$room_version")
     implementation("androidx.room:room-runtime:$room_version")

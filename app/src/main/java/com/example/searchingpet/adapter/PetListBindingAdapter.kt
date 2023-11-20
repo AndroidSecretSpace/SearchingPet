@@ -29,7 +29,6 @@ object PetListBindingAdapter {
     @BindingAdapter("android:setIsLike")
     fun setIsLike(view : Button, isLike: Boolean){
         view.text = if (isLike) "좋아요 해제"
-        else  "좋아요"
-
+        else "좋아요"
     }
 }

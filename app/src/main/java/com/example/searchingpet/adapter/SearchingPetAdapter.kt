@@ -9,8 +9,9 @@ import com.example.searchingpet.databinding.ItemPetlistBinding
 import com.example.searchingpet.model.ListItem
 import com.example.searchingpet.model.Row
 
-class SearchingPetAdapter(private val likeClickEvent: (ListItem) -> Unit) :
-    ListAdapter<ListItem, SearchingPetViewHolder>(PetDiffCallback) {
+class SearchingPetAdapter(
+    private val likeClickEvent: (ListItem) -> Unit,
+) : ListAdapter<ListItem, SearchingPetViewHolder>(PetDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchingPetViewHolder {
         return SearchingPetViewHolder(
             ItemPetlistBinding.inflate(
@@ -25,7 +26,6 @@ class SearchingPetAdapter(private val likeClickEvent: (ListItem) -> Unit) :
     override fun onBindViewHolder(holder: SearchingPetViewHolder, position: Int) {
         val pet = currentList[position]
         holder.bind(pet)
-
     }
 
 
@@ -36,7 +36,7 @@ class SearchingPetAdapter(private val likeClickEvent: (ListItem) -> Unit) :
             }
 
             override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
-                return oldItem.aNIMALNO == newItem.aNIMALNO
+                return oldItem == newItem
             }
 
         }

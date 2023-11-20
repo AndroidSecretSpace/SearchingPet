@@ -25,5 +25,4 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getLikeList(): List<LikeEntity> = dao.getLikeList()
-
 }
